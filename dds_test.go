@@ -16,7 +16,7 @@ func TestCreateParticipant(t *testing.T) {
 }
 
 type MyData struct {
-	X int32
+	X int32 `idl:"x"`
 }
 
 func TestCreateTopic(t *testing.T) {

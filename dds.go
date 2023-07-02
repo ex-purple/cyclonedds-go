@@ -5,8 +5,6 @@ package cyclonedds
 // #include <dds/dds.h>
 import "C"
 import (
-	"bytes"
-	"encoding/gob"
 	"errors"
 	"unsafe"
 )
@@ -138,14 +136,14 @@ func CreateWtiter[P ParticipantOrPublisher](participantOrPublisher P, topic Topi
 
 func (w DataWriter) Write(data any) error {
 
-	var buf bytes.Buffer
-	enc := gob.NewEncoder(&buf)
-	if err := enc.Encode(data); err != nil {
-		return err
-	}
-	msg := buf.Bytes()
+	// var buf bytes.Buffer
+	// enc := gob.NewEncoder(&buf)
+	// if err := enc.Encode(data); err != nil {
+	// 	return err
+	// }
+	// msg := buf.Bytes()
 
-	rc := C.dds_write(w.getNative(), unsafe.Pointer(&msg[0]))
+	rc := C.dds_write(w.getNative(), unsafe.Pointer(&data))
 	if rc != C.DDS_RETCODE_OK {
 		return errors.New(C.GoString(C.dds_strretcode(-rc)))
 	}
